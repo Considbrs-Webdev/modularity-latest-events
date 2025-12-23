@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ModularityLatestEvents\Module;
 
+use ModularityLatestEvents\Helper\CacheBust;
+
 /**
  * Class LatestEvents
  * @package ModularityLatestEvents\Module
@@ -33,6 +35,12 @@ class LatestEvents extends \Modularity\Module
             $this->getFields(),
         ));
 
+        // Get icon fields
+        $data['dateIcon'] = get_field('date_icon', $this->ID) ?: 'calendar_today';
+        $data['locationIcon'] = get_field('location_icon', $this->ID) ?: 'location_on';
+        $data['categoryIcon'] = get_field('category_icon', $this->ID) ?: 'category';
+        $data['iconColor'] = get_field('icon_color', $this->ID) ?: '#666666';
+
         return $data;
     }
 
@@ -52,6 +60,25 @@ class LatestEvents extends \Modularity\Module
     public function style(): void
     {
         $this->wpEnqueue?->add('css/modularity-latest-events.css', [], '1.0.0');
+    }
+
+    /**
+     * Script - Register & adding js
+     * @return void
+     */
+    public function script(): void
+    {
+        $scriptFile = CacheBust::name('js/modularity-latest-events.js');
+
+        if ($scriptFile) {
+            wp_enqueue_script(
+                'modularity-latest-events',
+                MODULARITYLATESTEVENTS_URL . '/assets/dist/' . $scriptFile,
+                [],
+                null,
+                true
+            );
+        }
     }
 
     /**

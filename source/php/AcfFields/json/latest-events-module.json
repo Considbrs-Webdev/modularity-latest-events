@@ -3,12 +3,12 @@
     "title": "LatestEvents Module",
     "fields": [
         {
-            "key": "field_latest-events_content",
-            "label": "Content",
-            "name": "latest-events_content",
+            "key": "field_latest-events_date_icon",
+            "label": "Date Icon",
+            "name": "date_icon",
             "aria-label": "",
-            "type": "wysiwyg",
-            "instructions": "Add your content here.",
+            "type": "icon",
+            "instructions": "Select icon for event date",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -16,11 +16,39 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "tabs": "all",
-            "toolbar": "full",
-            "media_upload": 1,
-            "delay": 0
+            "default_value": "calendar_today"
+        },
+        {
+            "key": "field_latest-events_location_icon",
+            "label": "Location Icon",
+            "name": "location_icon",
+            "aria-label": "",
+            "type": "icon",
+            "instructions": "Select icon for event location",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "location_on"
+        },
+        {
+            "key": "field_latest-events_category_icon",
+            "label": "Category Icon",
+            "name": "category_icon",
+            "aria-label": "",
+            "type": "icon",
+            "instructions": "Select icon for event category",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "category"
         }
     ],
     "location": [
