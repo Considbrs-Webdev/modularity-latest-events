@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Plugin Name:       Modularity LatestEvents
- * Plugin URI:        https://github.com/helsingborg-stad/modularity-latest-events
+ * Plugin Name:       Modularity Latest Events
+ * Plugin URI:        https://github.com/considbrs-webdev/modularity-latest-events
  * Description:       A latest-events for creating Modularity modules.
  * Version: 1.0.0
- * Author:            Starter
+ * Author:            Consid Borås AB
  * Author URI:        https://github.com/helsingborg-stad
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
@@ -52,4 +52,3 @@ add_filter('/Modularity/externalViewPath', function ($arr) {
 
 // Start application
 new ModularityLatestEvents\App();
-

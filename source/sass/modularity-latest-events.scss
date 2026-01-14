@@ -1,11 +1,38 @@
 .mod-latest-events {
+    // Scoped CSS variables with Municipio presets first, then fallbacks
+    --mod-latest-events-spacing-xs: 0.2rem;
+    --mod-latest-events-spacing-sm: 0.5rem;
+    --mod-latest-events-spacing-md: 1rem;
+    --mod-latest-events-spacing-lg: 1.5rem;
+    --mod-latest-events-spacing-xl: 2rem;
+    --mod-latest-events-color-white: var(--color-white, #ffffff);
+    --mod-latest-events-color-black: var(--color-black, #000000);
+    --mod-latest-events-color-text: var(--color-base, #000000);
+    --mod-latest-events-color-text-secondary: var(--text-secondary, rgba(0, 0, 0, 0.7));
+    --mod-latest-events-color-border: var(--color-border-divider, rgba(0, 0, 0, 0.1));
+    --mod-latest-events-color-background-light: var(--color-lighter, #e5e5e5);
+    --mod-latest-events-color-background-skeleton: var(--color-lighter, #e5e5e5);
+    --mod-latest-events-color-background-skeleton-dark: var(--color-light, #a3a3a3);
+    --mod-latest-events-radius-sm: var(--radius-sm, 4px);
+    --mod-latest-events-radius-md: var(--radius-md, 8px);
+    --mod-latest-events-font-family-heading: var(--font-family-heading, Work Sans, sans-serif);
+    --mod-latest-events-font-family-base: var(--font-family-base, Work Sans, sans-serif);
+    --mod-latest-events-font-weight-base: var(--font-weight-base, 400);
+    --mod-latest-events-font-weight-heading: var(--h3-font-weight, 500);
+    --mod-latest-events-font-weight-bold: var(--font-weight-button, 700);
+    --mod-latest-events-font-size-base: var(--c-slider-item-font-size-base, 1rem);
+    --mod-latest-events-font-size-heading: var(--h3-font-size, 22px);
+    --mod-latest-events-line-height-base: 1.5;
+    --mod-latest-events-line-height-heading: var(--h1-line-height, 1.3);
+
     &__header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 2rem;
+        margin-bottom: var(--mod-latest-events-spacing-xl, 2rem);
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: var(--mod-latest-events-spacing-md, 1rem);
+        color: var(--mod-latest-events-color-text, #000);
     }
 
     &__title {
@@ -15,10 +42,10 @@
     &__link {
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: var(--mod-latest-events-spacing-sm, 0.5rem);
         color: inherit;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: var(--mod-latest-events-font-weight-heading, 500);
         transition: opacity 0.2s ease;
 
         &:hover,
@@ -35,7 +62,7 @@
     &__container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
+        gap: var(--mod-latest-events-spacing-lg, 1.5rem);
 
         @media (min-width: 768px) {
             grid-template-columns: repeat(4, 1fr);
@@ -46,15 +73,13 @@
 // Event Card Styles
 .c-event-card {
     position: relative;
-    background: #fff;
-    border-radius: 8px;
+    background: var(--mod-latest-events-color-white, #fff);
+    border-radius: var(--mod-latest-events-radius-sm, 8px);
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease;
 
     &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     &__link {
@@ -66,9 +91,10 @@
     &__image-wrapper {
         position: relative;
         width: 100%;
-        padding-top: 56.25%; // 16:9 aspect ratio
+        // 16:9 aspect ratio = 9/16 * 100% = 56.25%
+        padding-top: 56.25%;
         overflow: hidden;
-        background: #f0f0f0;
+        background: var(--mod-latest-events-color-background-light, #f0f0f0);
     }
 
     &__image {
@@ -83,16 +109,16 @@
     &__badge {
         position: absolute;
         top: 0;
-        left: 1rem;
+        left: var(--mod-latest-events-spacing-md, 1rem);
         width: 3.25rem;
         height: 3.5625rem;
         padding: 0.8125rem 0.5625rem 0.75rem 0.5625rem;
         border-radius: 0 0 0.125rem 0.125rem;
-        background: #000;
-        color: #fff;
-        font-size: 1rem; // var(--Font-Size-Heading-4, 1)
-        font-weight: 700;
-        line-height: 1rem;
+        background: var(--mod-latest-events-color-black, #000);
+        color: var(--mod-latest-events-color-white, #fff);
+        font-size: var(--mod-latest-events-spacing-md, 1rem);
+        font-weight: var(--mod-latest-events-font-weight-bold, 700);
+        line-height: var(--mod-latest-events-spacing-md, 1rem);
         text-transform: lowercase;
         margin-left: auto;
         margin-right: auto;
@@ -108,22 +134,22 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 1.5rem 1.5rem 1.875rem 1.5rem;
+        padding: var(--mod-latest-events-spacing-lg, 1.5rem) var(--mod-latest-events-spacing-lg, 1.5rem) 1.875rem var(--mod-latest-events-spacing-lg, 1.5rem);
         gap: 1.375rem;
         flex: 1 0 0;
         align-self: stretch;
-        background: #fff;
+        background: var(--mod-latest-events-color-white, #fff);
     }
 
     &__title {
         align-self: stretch;
         margin: 0;
-        color: #000;
-        font-family: var(--Font-Family-Headings, sans-serif);
-        font-size: 1.375rem; // var(--Font-Size-Heading-3, 1) - approximate
+        color: var(--mod-latest-events-color-text, #000);
+        font-family: var(--mod-latest-events-font-family-heading, Work Sans, sans-serif);
+        font-size: var(--mod-latest-events-font-size-heading, 1.2rem);
         font-style: normal;
-        font-weight: 700;
-        line-height: 1.6875; // var(--Font-Line-height-Hea) - approximate
+        font-weight: var(--mod-latest-events-font-weight-bold, 700);
+        line-height: var(--mod-latest-events-line-height-base, 1.5);
         text-decoration-line: underline;
         text-decoration-style: solid;
         text-decoration-skip-ink: auto;
@@ -135,20 +161,20 @@
     &__meta {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: var(--mod-latest-events-spacing-xs, 0.2rem);
     }
 
     &__meta-item {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: var(--mod-latest-events-spacing-sm, 0.5rem);
         width: 11.875rem;
-        color: #000;
-        font-family: var(--Font-Family-Small, sans-serif);
-        font-size: 1rem; // var(--Font-Size-Small, 1rem)
+        color: var(--mod-latest-events-color-text, #000);
+        font-family: var(--mod-latest-events-font-family-base, Work Sans, sans-serif);
+        font-size: var(--mod-latest-events-font-size-base, 1rem);
         font-style: normal;
-        font-weight: 400;
-        line-height: 1.5; // var(--Font-Line-height-Sma) - approximate
+        font-weight: var(--mod-latest-events-font-weight-base, 400);
+        line-height: var(--mod-latest-events-line-height-base, 1.5);
     }
 
     &__icon {
@@ -164,9 +190,9 @@
 
     &__error {
         grid-column: 1 / -1;
-        padding: 2rem;
+        padding: var(--mod-latest-events-spacing-xl, 2rem);
         text-align: center;
-        color: #666;
+        color: var(--mod-latest-events-color-text-secondary, #666);
     }
 
     // Skeleton Loader Styles
@@ -187,51 +213,53 @@
         height: 100%;
         background: linear-gradient(
             90deg,
-            #f0f0f0 0%,
-            #e0e0e0 50%,
-            #f0f0f0 100%
+            var(--mod-latest-events-color-background-skeleton, #f0f0f0) 0%,
+            var(--mod-latest-events-color-background-skeleton-dark, #e0e0e0) 50%,
+            var(--mod-latest-events-color-background-skeleton, #f0f0f0) 100%
         );
         background-size: 200% 100%;
         animation: skeleton-shimmer 1.5s ease-in-out infinite;
     }
 
     &__badge--skeleton {
-        background: #e0e0e0;
+        background: var(--mod-latest-events-color-background-skeleton-dark, #e0e0e0);
         color: transparent;
         min-width: 60px;
     }
 
     &__skeleton-title {
         height: 1.5rem;
+        width: 100%;
         background: linear-gradient(
             90deg,
-            #f0f0f0 0%,
-            #e0e0e0 50%,
-            #f0f0f0 100%
+            var(--mod-latest-events-color-background-skeleton, #f0f0f0) 0%,
+            var(--mod-latest-events-color-background-skeleton-dark, #e0e0e0) 50%,
+            var(--mod-latest-events-color-background-skeleton, #f0f0f0) 100%
         );
         background-size: 200% 100%;
         animation: skeleton-shimmer 1.5s ease-in-out infinite;
-        border-radius: 4px;
+        border-radius: var(--mod-latest-events-radius-sm, 4px);
         margin-bottom: 0.75rem;
     }
 
     &__skeleton-meta {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: var(--mod-latest-events-spacing-sm, 0.5rem);
+        width: 100%;
     }
 
     &__skeleton-line {
         height: 0.875rem;
         background: linear-gradient(
             90deg,
-            #f0f0f0 0%,
-            #e0e0e0 50%,
-            #f0f0f0 100%
+            var(--mod-latest-events-color-background-skeleton, #f0f0f0) 0%,
+            var(--mod-latest-events-color-background-skeleton-dark, #e0e0e0) 50%,
+            var(--mod-latest-events-color-background-skeleton, #f0f0f0) 100%
         );
         background-size: 200% 100%;
         animation: skeleton-shimmer 1.5s ease-in-out infinite;
-        border-radius: 4px;
+        border-radius: var(--mod-latest-events-radius-sm, 4px);
         width: 80%;
 
         &:nth-child(2) {

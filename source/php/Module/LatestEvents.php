@@ -17,8 +17,8 @@ class LatestEvents extends \Modularity\Module
 
     public function init(): void
     {
-        $this->nameSingular = __('LatestEvents', 'modularity-latest-events');
-        $this->namePlural = __('LatestEvents', 'modularity-latest-events');
+        $this->nameSingular = __('Latest Events', 'modularity-latest-events');
+        $this->namePlural = __('Latest Events', 'modularity-latest-events');
         $this->description = __('A latest-events module.', 'modularity-latest-events');
     }
 
@@ -91,4 +91,3 @@ class LatestEvents extends \Modularity\Module
      * template()        Return the view template (blade) the module should use when displayed
      */
 }
-
