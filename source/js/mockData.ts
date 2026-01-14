@@ -18,7 +18,7 @@ export const mockEvents: SimpleViewEvent[] = [
     {
         id: '1',
         title: 'Konsert i badhusparken',
-        image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd0?w=800&h=600&fit=crop',
+        image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop',
         badgeDate: '09 sep',
         dateSpan: 'Tisdag, 16 september',
         location: 'Badhusparken',
@@ -28,7 +28,7 @@ export const mockEvents: SimpleViewEvent[] = [
     {
         id: '2',
         title: 'Rallycross SM på Piteå Motorstadion',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
+        image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop',
         badgeDate: '09 sep',
         dateSpan: 'Tisdag, 16 september',
         location: 'Badhusparken',
@@ -38,7 +38,7 @@ export const mockEvents: SimpleViewEvent[] = [
     {
         id: '3',
         title: 'Piteå Summer Games - PSG 2026',
-        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop',
+        image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop',
         badgeDate: '09 sep',
         dateSpan: 'Tisdag, 16 september',
         location: 'Badhusparken',
