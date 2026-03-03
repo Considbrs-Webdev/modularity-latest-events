@@ -3,6 +3,7 @@
 namespace ModularityLatestEvents;
 
 use ModularityLatestEvents\Helper\CacheBust;
+use ModularityLatestEvents\Api\EventProxy;
 
 /**
  * Class App
@@ -16,11 +17,10 @@ class App
 {
     public function __construct()
     {
-        // Register module with Modularity
         add_action('init', [$this, 'registerModule']);
-
-        // Enqueue styles
         add_action('wp_enqueue_scripts', [$this, 'enqueueStyles']);
+
+        new EventProxy();
     }
 
     /**

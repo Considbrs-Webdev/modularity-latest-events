@@ -59,3 +59,7 @@ phpunit-testdox.txt
 !.gitignore
 !.editorconfig
 !.vscode
+!.env.example
+
+# ignore .env (contains secrets)
+.env

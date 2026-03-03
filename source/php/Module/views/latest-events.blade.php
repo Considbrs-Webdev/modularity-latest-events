@@ -22,8 +22,6 @@
         class="mod-latest-events__container" 
         data-simpleview-events
         data-date-icon="{{ $dateIcon ?? 'calendar_today' }}"
-        data-location-icon="{{ $locationIcon ?? 'location_on' }}"
-        data-category-icon="{{ $categoryIcon ?? 'category' }}"
         data-icon-color="{{ $iconColor ?? '#666666' }}"
     >
         {{-- Skeleton loader --}}

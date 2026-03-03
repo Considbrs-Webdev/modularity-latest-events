@@ -35,10 +35,7 @@ class LatestEvents extends \Modularity\Module
             $this->getFields(),
         ));
 
-        // Get icon fields
         $data['dateIcon'] = get_field('date_icon', $this->ID) ?: 'calendar_today';
-        $data['locationIcon'] = get_field('location_icon', $this->ID) ?: 'location_on';
-        $data['categoryIcon'] = get_field('category_icon', $this->ID) ?: 'category';
         $data['iconColor'] = get_field('icon_color', $this->ID) ?: '#666666';
 
         return $data;
@@ -78,6 +75,11 @@ class LatestEvents extends \Modularity\Module
                 null,
                 true
             );
+
+            wp_localize_script('modularity-latest-events', 'modLatestEvents', [
+                'ajaxUrl'  => admin_url('admin-ajax.php'),
+                'proxyUrl' => MODULARITYLATESTEVENTS_URL . '/event-proxy.php',
+            ]);
         }
     }
 
