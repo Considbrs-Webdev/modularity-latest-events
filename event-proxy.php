@@ -3,19 +3,7 @@
 /**
  * Standalone event proxy — bypasses WordPress entirely.
  * Called directly from JS: /wp-content/plugins/modularity-latest-events/event-proxy.php
- *
- * Writes a profiling log to __DIR__/profile.txt on every request.
  */
-
-$profilingStart = microtime(true);
-$profileLog     = [];
-
-function profileMark(string $label, float $since): void
-{
-    global $profileLog;
-    $elapsed = (microtime(true) - $since) * 1000;
-    $profileLog[] = sprintf('  %-40s %8.2f ms', $label, $elapsed);
-}
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -23,7 +11,6 @@ header('Pragma: no-cache');
 header('Expires: 0');
 header('X-LiteSpeed-Cache-Control: no-cache');
 
-$t = microtime(true);
 $envFile = __DIR__ . '/.env';
 
 if (!file_exists($envFile) || !is_readable($envFile)) {
@@ -41,7 +28,6 @@ foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line)
     [$key, $value] = explode('=', $line, 2);
     $env[trim($key)] = trim($value);
 }
-profileMark('Read .env', $t);
 
 $apiUrl   = rtrim($env['VISITPITEA_API_URL'] ?? '', '/');
 $apiToken = $env['VISITPITEA_API_TOKEN'] ?? '';
@@ -55,37 +41,31 @@ if (empty($apiUrl) || empty($apiToken)) {
 
 $perPage = min(abs(intval($_GET['per_page'] ?? 4)), 12);
 
-$t = microtime(true);
 $events = apiGet($apiUrl . '/events?' . http_build_query([
     'lang'     => 'sv',
     'per_page' => $perPage,
     'sort'     => 'date',
     'order'    => 'asc',
 ]), $apiToken);
-profileMark('API: GET /events', $t);
 
 if ($events === null) {
     http_response_code(502);
     echo json_encode(['error' => 'Could not fetch events.']);
-    writeProfile($profilingStart, $profileLog);
     exit;
 }
 
 $result = [];
 
-foreach ($events['data'] ?? [] as $i => $event) {
+foreach ($events['data'] ?? [] as $event) {
     $imageUrl = '';
     $imageId  = intval($event['image'] ?? 0);
 
     if ($imageId > 0) {
-        $t = microtime(true);
         $attachment = apiGet($apiUrl . '/attachments/' . $imageId, $apiToken);
-        profileMark("API: GET /attachments/{$imageId} (event #{$i})", $t);
-
-        $imageUrl = $attachment['sizes']['large']['url']
-                 ?? $attachment['sizes']['medium_large']['url']
-                 ?? $attachment['url']
-                 ?? '';
+        $imageUrl   = $attachment['sizes']['large']['url']
+                   ?? $attachment['sizes']['medium_large']['url']
+                   ?? $attachment['url']
+                   ?? '';
     }
 
     $result[] = [
@@ -98,28 +78,8 @@ foreach ($events['data'] ?? [] as $i => $event) {
     ];
 }
 
-$t = microtime(true);
 echo json_encode($result);
-profileMark('JSON encode + output', $t);
-
-writeProfile($profilingStart, $profileLog);
 exit;
-
-
-function writeProfile(float $start, array $log): void
-{
-    $total = (microtime(true) - $start) * 1000;
-    $lines = [
-        '=== event-proxy.php profile — ' . date('Y-m-d H:i:s') . ' ===',
-        '',
-        ...$log,
-        '',
-        sprintf('  %-40s %8.2f ms', 'TOTAL', $total),
-        str_repeat('-', 60),
-        '',
-    ];
-    file_put_contents(__DIR__ . '/profile.txt', implode("\n", $lines) . "\n", FILE_APPEND | LOCK_EX);
-}
 
 
 function apiGet(string $url, string $token): ?array
