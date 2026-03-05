@@ -47,14 +47,18 @@ class EventProxy
 
         foreach ($events as $event) {
             $imageUrl = $this->resolveImage(intval($event['image'] ?? 0));
+            $categoryIds = $event['category_ids'] ?? [];
+            $categoryLabel = $this->resolveCategoryLabel($categoryIds);
 
             $result[] = [
-                'id'       => $event['id'],
-                'title'    => $event['title'] ?? '',
-                'image'    => $imageUrl,
+                'id'        => $event['id'],
+                'title'     => $event['title'] ?? '',
+                'image'     => $imageUrl,
                 'badgeDate' => $this->extractBadgeDate($event['event_date'] ?? ''),
-                'dateSpan' => $this->buildDateSpan($event),
-                'link'     => $this->siteUrl . '/events/' . ($event['slug'] ?? ''),
+                'dateSpan'  => $this->buildDateSpan($event),
+                'location'  => trim($event['location'] ?? ''),
+                'category'  => $categoryLabel,
+                'link'      => $this->siteUrl . '/events/' . ($event['slug'] ?? ''),
             ];
         }
 
@@ -116,6 +120,33 @@ class EventProxy
             ?? $data['sizes']['medium_large']['url']
             ?? $data['url']
             ?? '';
+    }
+
+    /**
+     * Fetch category names from API and return as comma-separated string.
+     *
+     * @param array<int, int> $categoryIds
+     */
+    private function resolveCategoryLabel(array $categoryIds): string
+    {
+        if (empty($categoryIds)) {
+            return '';
+        }
+
+        $names = [];
+        foreach ($categoryIds as $id) {
+            $id = (int) $id;
+            if ($id <= 0) {
+                continue;
+            }
+            $data = $this->apiGet('/categories/' . $id);
+            $name = $data['name'] ?? null;
+            if (is_string($name) && $name !== '') {
+                $names[] = $name;
+            }
+        }
+
+        return implode(', ', $names);
     }
 
     /**

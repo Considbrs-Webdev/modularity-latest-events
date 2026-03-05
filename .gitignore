@@ -63,3 +63,6 @@ phpunit-testdox.txt
 
 # ignore .env (contains secrets)
 .env
+
+# proxy file cache (generated at runtime)
+/cache/

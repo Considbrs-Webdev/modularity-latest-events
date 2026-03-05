@@ -6,6 +6,8 @@ interface LatestEvent {
     image: string;
     badgeDate: string;
     dateSpan: string;
+    location?: string;
+    category?: string;
     link: string;
 }
 
@@ -126,6 +128,16 @@ function renderEventCard(
                         <div class="c-event-card__meta-item">
                             ${renderIcon(dateIcon, iconColor)}
                             <span>${escapeHtml(event.dateSpan)}</span>
+                        </div>` : ''}
+                        ${event.location ? `
+                        <div class="c-event-card__meta-item">
+                            ${renderIcon('location_on', iconColor)}
+                            <span>${escapeHtml(event.location)}</span>
+                        </div>` : ''}
+                        ${event.category ? `
+                        <div class="c-event-card__meta-item">
+                            ${renderIcon('category', iconColor)}
+                            <span>${escapeHtml(event.category)}</span>
                         </div>` : ''}
                     </div>
                 </div>

@@ -41,6 +41,15 @@ if (empty($apiUrl) || empty($apiToken)) {
 
 $perPage = min(abs(intval($_GET['per_page'] ?? 4)), 12);
 
+$cacheTtlSeconds = 4 * 3600; // 4 hours
+$cacheDir       = __DIR__ . '/cache';
+$cacheFile      = $cacheDir . '/events-' . $perPage . '.json';
+
+if (is_readable($cacheFile) && (filemtime($cacheFile) + $cacheTtlSeconds) > time()) {
+    echo file_get_contents($cacheFile);
+    exit;
+}
+
 $events = apiGet($apiUrl . '/events?' . http_build_query([
     'lang'     => 'sv',
     'per_page' => $perPage,
@@ -68,17 +77,33 @@ foreach ($events['data'] ?? [] as $event) {
                    ?? '';
     }
 
+    $categoryIds = $event['category_ids'] ?? [];
+    $categoryLabel = resolveCategoryLabel($apiUrl, $apiToken, $categoryIds);
+
     $result[] = [
         'id'        => $event['id'],
         'title'     => $event['title'] ?? '',
         'image'     => $imageUrl,
         'badgeDate' => extractBadgeDate($event['event_date'] ?? ''),
         'dateSpan'  => buildDateSpan($event),
+        'location'  => trim($event['location'] ?? ''),
+        'category'  => $categoryLabel,
         'link'      => $siteUrl . '/events/' . ($event['slug'] ?? ''),
     ];
 }
 
-echo json_encode($result);
+$json = json_encode($result);
+
+if ($json !== false) {
+    if (!is_dir($cacheDir)) {
+        @mkdir($cacheDir, 0755, true);
+    }
+    if (is_dir($cacheDir) && is_writable($cacheDir)) {
+        @file_put_contents($cacheFile, $json, LOCK_EX);
+    }
+}
+
+echo $json;
 exit;
 
 
@@ -141,4 +166,34 @@ function buildDateSpan(array $event): string
     }
 
     return $span;
+}
+
+/**
+ * Fetch category names from API and return as comma-separated string.
+ *
+ * @param string $apiUrl
+ * @param string $apiToken
+ * @param array<int, int> $categoryIds
+ * @return string
+ */
+function resolveCategoryLabel(string $apiUrl, string $apiToken, array $categoryIds): string
+{
+    if (empty($categoryIds)) {
+        return '';
+    }
+
+    $names = [];
+    foreach ($categoryIds as $id) {
+        $id = (int) $id;
+        if ($id <= 0) {
+            continue;
+        }
+        $data = apiGet($apiUrl . '/categories/' . $id, $apiToken);
+        $name = $data['name'] ?? null;
+        if (is_string($name) && $name !== '') {
+            $names[] = $name;
+        }
+    }
+
+    return implode(', ', $names);
 }
