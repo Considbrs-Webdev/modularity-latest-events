@@ -37,6 +37,7 @@ class LatestEvents extends \Modularity\Module
 
         $data['dateIcon'] = get_field('date_icon', $this->ID) ?: 'calendar_today';
         $data['iconColor'] = get_field('icon_color', $this->ID) ?: '#666666';
+        $data['eventsCalendarUrl'] = (string) (get_field('events_calendar_url', $this->ID) ?: '');
 
         return $data;
     }
@@ -77,8 +78,7 @@ class LatestEvents extends \Modularity\Module
             );
 
             wp_localize_script('modularity-latest-events', 'modLatestEvents', [
-                'ajaxUrl'  => admin_url('admin-ajax.php'),
-                'proxyUrl' => MODULARITYLATESTEVENTS_URL . '/event-proxy.php',
+                'ajaxUrl' => admin_url('admin-ajax.php'),
             ]);
         }
     }

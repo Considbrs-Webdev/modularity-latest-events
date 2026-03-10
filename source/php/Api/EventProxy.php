@@ -12,9 +12,20 @@ class EventProxy
 
     public function __construct()
     {
-        $env = $this->loadEnv();
-        $this->apiUrl = rtrim($env['VISITPITEA_API_URL'] ?? '', '/');
-        $this->apiToken = $env['VISITPITEA_API_TOKEN'] ?? '';
+        // Prioritize WordPress options over .env file
+        $optionUrl   = get_option('modularity_latest_events_api_url', '');
+        $optionToken = get_option('modularity_latest_events_api_token', '');
+
+        // Fall back to .env if options are empty
+        if (empty($optionUrl) || empty($optionToken)) {
+            $env = $this->loadEnv();
+            $this->apiUrl   = rtrim($env['VISITPITEA_API_URL'] ?? '', '/');
+            $this->apiToken = $env['VISITPITEA_API_TOKEN'] ?? '';
+        } else {
+            $this->apiUrl   = rtrim($optionUrl, '/');
+            $this->apiToken = $optionToken;
+        }
+
         $this->siteUrl = rtrim(preg_replace('#/api$#', '', $this->apiUrl), '/');
 
         add_action('wp_ajax_latest_events', [$this, 'handleRequest']);
@@ -30,6 +41,12 @@ class EventProxy
         }
 
         $perPage = min(abs(intval($_GET['per_page'] ?? 4)), 12);
+        $cacheKey = 'latest_events_' . $perPage;
+        $cached = get_transient($cacheKey);
+
+        if ($cached !== false) {
+            wp_send_json($cached);
+        }
 
         $response = $this->apiGet('/events', [
             'lang'     => 'sv',
@@ -62,6 +79,7 @@ class EventProxy
             ];
         }
 
+        set_transient($cacheKey, $result, 2 * HOUR_IN_SECONDS);
         wp_send_json($result);
     }
 

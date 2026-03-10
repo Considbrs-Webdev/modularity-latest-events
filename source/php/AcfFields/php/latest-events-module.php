@@ -70,6 +70,22 @@ if (function_exists('acf_add_local_field_group')) {
                 ),
                 'default_value' => '#666666',
             ),
+            4 => array(
+                'key' => 'field_latest-events_calendar_url',
+                'label' => __('Events Calendar URL', 'modularity-latest-events'),
+                'name' => 'events_calendar_url',
+                'aria-label' => '',
+                'type' => 'url',
+                'instructions' => __('URL for the "Till evenemangskalendern" link. Leave empty to hide the link.', 'modularity-latest-events'),
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'default_value' => '',
+            ),
         ),
         'location' => array(
             0 => array(

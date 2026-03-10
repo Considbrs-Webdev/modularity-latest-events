@@ -1,4 +1,4 @@
-declare const modLatestEvents: { ajaxUrl: string; proxyUrl?: string };
+declare const modLatestEvents: { ajaxUrl: string };
 
 interface LatestEvent {
     id: number;
@@ -11,31 +11,7 @@ interface LatestEvent {
     link: string;
 }
 
-async function fetchFromProxy(): Promise<LatestEvent[]> {
-    if (!modLatestEvents.proxyUrl) {
-        throw new Error('proxyUrl not configured');
-    }
-
-    const url = new URL(modLatestEvents.proxyUrl, window.location.origin);
-    url.searchParams.set('per_page', '4');
-    url.searchParams.set('_nocache', Date.now().toString());
-
-    const response = await fetch(url.toString(), { cache: 'no-store' });
-
-    if (!response.ok) {
-        throw new Error(`Proxy HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (data?.error) {
-        throw new Error(data.error);
-    }
-
-    return data;
-}
-
-async function fetchFromAjax(): Promise<LatestEvent[]> {
+async function fetchEvents(): Promise<LatestEvent[]> {
     const url = new URL(modLatestEvents.ajaxUrl, window.location.origin);
     url.searchParams.set('action', 'latest_events');
     url.searchParams.set('per_page', '4');
@@ -48,14 +24,6 @@ async function fetchFromAjax(): Promise<LatestEvent[]> {
     }
 
     return response.json();
-}
-
-async function fetchEvents(): Promise<LatestEvent[]> {
-    try {
-        return await fetchFromProxy();
-    } catch {
-        return fetchFromAjax();
-    }
 }
 
 function escapeHtml(text: string): string {

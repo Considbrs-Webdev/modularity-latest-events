@@ -10,12 +10,14 @@
             @endtypography
         @endif
         
-        <a href="#" class="mod-latest-events__link">
+        @if (!empty($eventsCalendarUrl))
+        <a href="{{ esc_url($eventsCalendarUrl) }}" class="mod-latest-events__link">
             {{ __('Till evenemangskalendern', 'modularity-latest-events') }}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M12 4L11.293 4.707L13.586 7H2V8H13.586L11.293 10.293L12 11L15.5 7.5L12 4Z" fill="currentColor"/>
             </svg>
         </a>
+        @endif
     </div>
 
     <div 
