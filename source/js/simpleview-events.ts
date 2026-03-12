@@ -26,10 +26,23 @@ async function fetchEvents(): Promise<LatestEvent[]> {
     return response.json();
 }
 
+/** Decode HTML entities so already-encoded API data is normalized before we escape. */
+function decodeHtml(html: string): string {
+    if (!html) return html;
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent ?? '';
+}
+
 function escapeHtml(text: string): string {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+/** Safe text for injection: decode then escape to handle pre-encoded API data. */
+function safeHtml(text: string): string {
+    return escapeHtml(decodeHtml(text));
 }
 
 function getFontAwesomeClass(iconName: string): string {
@@ -76,7 +89,7 @@ function renderEventCard(
     const imageHtml = event.image
         ? `<img 
                 src="${escapeHtml(event.image)}" 
-                alt="${escapeHtml(event.title)}"
+                alt="${safeHtml(event.title)}"
                 class="c-event-card__image"
                 loading="lazy"
             />`
@@ -87,25 +100,25 @@ function renderEventCard(
             <a href="${escapeHtml(event.link)}" class="c-event-card__link">
                 <div class="c-event-card__image-wrapper">
                     ${imageHtml}
-                    ${event.badgeDate ? `<div class="c-event-card__badge">${escapeHtml(event.badgeDate)}</div>` : ''}
+                    ${event.badgeDate ? `<div class="c-event-card__badge">${safeHtml(event.badgeDate)}</div>` : ''}
                 </div>
                 <div class="c-event-card__content">
-                    <h3 class="c-event-card__title">${escapeHtml(event.title)}</h3>
+                    <h3 class="c-event-card__title">${safeHtml(event.title)}</h3>
                     <div class="c-event-card__meta">
                         ${event.dateSpan ? `
                         <div class="c-event-card__meta-item">
                             ${renderIcon(dateIcon, iconColor)}
-                            <span>${escapeHtml(event.dateSpan)}</span>
+                            <span>${safeHtml(event.dateSpan)}</span>
                         </div>` : ''}
                         ${event.location ? `
                         <div class="c-event-card__meta-item">
                             ${renderIcon('location_on', iconColor)}
-                            <span>${escapeHtml(event.location)}</span>
+                            <span>${safeHtml(event.location)}</span>
                         </div>` : ''}
                         ${event.category ? `
                         <div class="c-event-card__meta-item">
                             ${renderIcon('category', iconColor)}
-                            <span>${escapeHtml(event.category)}</span>
+                            <span>${safeHtml(event.category)}</span>
                         </div>` : ''}
                     </div>
                 </div>
