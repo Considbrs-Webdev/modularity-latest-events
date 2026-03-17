@@ -1,0 +1,97 @@
+# Copyright (C) 2026 Consid Borås AB
+# This file is distributed under the MIT.
+msgid ""
+msgstr ""
+"Project-Id-Version: Modularity Latest Events 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/modularity-latest-events\n"
+"Last-Translator: \n"
+"Language-Team: Svenska\n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2026-03-17 14:00+0100\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: modularity-latest-events\n"
+
+#. Plugin Name of the plugin
+#: modularity-latest-events.php
+msgid "Modularity Latest Events"
+msgstr "Modularity Senaste evenemang"
+
+#. Plugin URI of the plugin
+#: modularity-latest-events.php
+msgid "https://github.com/considbrs-webdev/modularity-latest-events"
+msgstr ""
+
+#. Description of the plugin
+#: modularity-latest-events.php
+msgid "A latest-events for creating Modularity modules."
+msgstr "Ett senaste-evenemang-modul för Modularity."
+
+#. Author of the plugin
+#: modularity-latest-events.php
+msgid "Consid Borås AB"
+msgstr ""
+
+#. Author URI of the plugin
+#: modularity-latest-events.php
+msgid "https://github.com/helsingborg-stad"
+msgstr ""
+
+#: source/php/AcfFields/php/latest-events-module.php:7
+msgid "LatestEvents Module"
+msgstr "Senaste evenemang-modul"
+
+#: source/php/AcfFields/php/latest-events-module.php:11
+msgid "Date Icon"
+msgstr "Datumikon"
+
+#: source/php/AcfFields/php/latest-events-module.php:15
+msgid "Select icon for event date"
+msgstr "Välj ikon för evenemangsdatum"
+
+#: source/php/AcfFields/php/latest-events-module.php:27
+msgid "Location Icon"
+msgstr "Platsikon"
+
+#: source/php/AcfFields/php/latest-events-module.php:31
+msgid "Select icon for event location"
+msgstr "Välj ikon för evenemangsplats"
+
+#: source/php/AcfFields/php/latest-events-module.php:43
+msgid "Category Icon"
+msgstr "Kategoriikon"
+
+#: source/php/AcfFields/php/latest-events-module.php:47
+msgid "Select icon for event category"
+msgstr "Välj ikon för evenemangkategori"
+
+#: source/php/AcfFields/php/latest-events-module.php:59
+msgid "Icon Color"
+msgstr "Ikonfärg"
+
+#: source/php/AcfFields/php/latest-events-module.php:63
+msgid "Select color for the icons"
+msgstr "Välj färg för ikonerna"
+
+#: source/php/AcfFields/php/latest-events-module.php:75
+msgid "Events Calendar URL"
+msgstr "URL till evenemangskalendern"
+
+#: source/php/AcfFields/php/latest-events-module.php:79
+msgid "URL for the \"Till evenemangskalendern\" link. Leave empty to hide the link."
+msgstr "URL för länken \"Till evenemangskalendern\". Lämna tomt för att dölja länken."
+
+#: source/php/Module/LatestEvents.php:20
+#: source/php/Module/LatestEvents.php:21
+msgid "Latest Events"
+msgstr "Senaste evenemang"
+
+#: source/php/Module/LatestEvents.php:22
+msgid "A latest-events module."
+msgstr "Ett senaste-evenemang-modul."
+
+#: source/php/Module/views/latest-events.blade.php:16
+msgid "Till evenemangskalendern"
+msgstr "Till evenemangskalendern"
