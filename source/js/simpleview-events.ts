@@ -78,7 +78,7 @@ function getFontAwesomeClass(iconName: string): string {
 function renderIcon(iconClass: string, iconColor: string): string {
     const faClass = getFontAwesomeClass(iconClass);
     const colorStyle = iconColor ? `style="color: ${escapeHtml(iconColor)};"` : '';
-    return `<i class="${escapeHtml(faClass)}" ${colorStyle} aria-hidden="true"></i>`;
+    return `<i class="${escapeHtml(faClass)} c-event-card__icon" ${colorStyle} aria-hidden="true"></i>`;
 }
 
 function renderEventCard(

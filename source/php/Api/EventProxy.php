@@ -123,7 +123,15 @@ class EventProxy
             $span .= ' ' . $event['event_time'];
         }
 
-        return $span;
+        return $this->formatSwedishClockTimes($span);
+    }
+
+    /**
+     * Swedish typography: clock times use a full stop, not a colon (e.g. 19.00).
+     */
+    private function formatSwedishClockTimes(string $text): string
+    {
+        return (string) preg_replace('/(\d{1,2}):(\d{2})/u', '$1.$2', $text);
     }
 
     private function resolveImage(int $imageId): string
