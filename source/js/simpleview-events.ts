@@ -96,14 +96,15 @@ function renderEventCard(
         : '';
 
     return `
-        <article class="c-event-card">
-            <a href="${escapeHtml(event.link)}" class="c-event-card__link">
-                <div class="c-event-card__image-wrapper">
+        <li class="c-event-card">
+            <div class="c-event-card__image-wrapper">
                     ${imageHtml}
                     ${event.badgeDate ? `<div class="c-event-card__badge">${safeHtml(event.badgeDate)}</div>` : ''}
-                </div>
-                <div class="c-event-card__content">
-                    <h3 class="c-event-card__title">${safeHtml(event.title)}</h3>
+            </div>
+            <div class="c-event-card__content">
+                    <h3 class="c-event-card__title">
+                        <a href="${escapeHtml(event.link)}" class="c-event-card__link">${safeHtml(event.title)}</a>
+                    </h3>
                     <div class="c-event-card__meta">
                         ${event.dateSpan ? `
                         <div class="c-event-card__meta-item">
@@ -121,17 +122,16 @@ function renderEventCard(
                             <span>${safeHtml(event.category)}</span>
                         </div>` : ''}
                     </div>
-                </div>
-            </a>
-        </article>
+            </div>
+        </li>
     `;
 }
 
 function showError(container: HTMLElement, message: string): void {
     container.innerHTML = `
-        <div class="c-event-card__error">
+        <li class="c-event-card__error" role="status">
             <p>${message}</p>
-        </div>
+        </li>
     `;
 }
 
@@ -144,10 +144,9 @@ function initLatestEvents(): void {
 
         fetchEvents()
             .then((events) => {
-                const skeleton = container.querySelector('.c-event-card__skeleton-wrapper');
-                if (skeleton) {
-                    skeleton.remove();
-                }
+                container
+                    .querySelectorAll<HTMLElement>('.c-event-card--skeleton')
+                    .forEach((el) => el.remove());
 
                 const cardsHtml = events
                     .map((event) => renderEventCard(event, dateIcon, iconColor))
