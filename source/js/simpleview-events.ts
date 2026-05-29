@@ -116,11 +116,6 @@ function renderEventCard(
                             ${renderIcon('location_on', iconColor)}
                             <span>${safeHtml(event.location)}</span>
                         </div>` : ''}
-                        ${event.category ? `
-                        <div class="c-event-card__meta-item">
-                            ${renderIcon('category', iconColor)}
-                            <span>${safeHtml(event.category)}</span>
-                        </div>` : ''}
                     </div>
             </div>
         </li>

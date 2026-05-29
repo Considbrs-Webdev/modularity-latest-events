@@ -29,7 +29,6 @@
                     <div class="c-event-card__skeleton-meta">
                         <div class="c-event-card__skeleton-line"></div>
                         <div class="c-event-card__skeleton-line"></div>
-                        <div class="c-event-card__skeleton-line"></div>
                     </div>
                 </div>
             </li>
