@@ -64,7 +64,7 @@
     margin-bottom: var(--mod-latest-events-spacing-xl, 2rem);
     flex-wrap: wrap;
     gap: var(--mod-latest-events-spacing-md, 1rem);
-    color: var(--mod-latest-events-color-text, #000);
+    color: inherit;
   }
 
   &__title {
@@ -75,7 +75,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--mod-latest-events-spacing-sm, 0.5rem);
-    color: var(--mod-latest-events-color-text, #000);
+    color: inherit;
     text-decoration: none;
     font-weight: var(--mod-latest-events-font-weight-heading, 600);
     transition: opacity 0.2s ease;
