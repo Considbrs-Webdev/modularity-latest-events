@@ -21,25 +21,8 @@ class App
     {
         add_action('init', [$this, 'registerModule']);
         add_action('enqueue_block_assets', [$this, 'enqueueEditorStyles']);
-        add_filter('Pitea/Editor/ModuleStyles', [$this, 'registerEditorStyle']);
 
         new EventProxy();
-    }
-
-    /**
-     * Register the module stylesheet for the shared editor-canvas loader.
-     *
-     * @param array<string, string> $styles
-     * @return array<string, string>
-     */
-    public function registerEditorStyle(array $styles): array
-    {
-        $url = $this->stylesheetUrl();
-        if ($url !== '') {
-            $styles['modularity-latest-events'] = $url;
-        }
-
-        return $styles;
     }
 
     /**
@@ -51,7 +34,7 @@ class App
      */
     public function enqueueEditorStyles(): void
     {
-        if (!is_admin() || wp_style_is('modularity-latest-events', 'enqueued')) {
+        if (!is_admin()) {
             return;
         }
 
