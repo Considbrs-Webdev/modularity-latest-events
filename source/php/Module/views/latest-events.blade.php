@@ -22,27 +22,63 @@
     </div>
     @endif
 
-    <ul
-        class="mod-latest-events__container"
-        data-simpleview-events
-        data-date-icon="{{ $dateIcon ?? 'calendar_today' }}"
-        data-icon-color="{{ $iconColor ?? '#666666' }}"
-    >
-        {{-- Skeleton loader --}}
-        @for ($i = 0; $i < 4; $i++)
-            <li class="c-event-card c-event-card--skeleton">
-                <div class="c-event-card__image-wrapper">
-                    <div class="c-event-card__skeleton-image"></div>
-                    <div class="c-event-card__badge c-event-card__badge--skeleton"></div>
-                </div>
-                <div class="c-event-card__content">
-                    <div class="c-event-card__skeleton-title"></div>
-                    <div class="c-event-card__skeleton-meta">
-                        <div class="c-event-card__skeleton-line"></div>
-                        <div class="c-event-card__skeleton-line"></div>
+    @if (!empty($isEditorPreview))
+        <ul class="mod-latest-events__container" data-editor-preview="{{ $editorPreviewState ?? 'unavailable' }}">
+            @if (($editorPreviewState ?? '') === 'ready')
+                @foreach ($editorEvents as $event)
+                    @include('partials.editor-event-card', [
+                        'event' => $event,
+                        'iconColor' => $editorIconColor ?? '#666666',
+                    ])
+                @endforeach
+            @elseif (($editorPreviewState ?? '') === 'empty')
+                <li class="c-event-card__error" role="status">
+                    <p>{{ __('Inga evenemang', 'modularity-latest-events') }}</p>
+                </li>
+            @else
+                <li class="c-event-card__error" role="status">
+                    <p>{{ __('Förhandsvisning otillgänglig', 'modularity-latest-events') }}</p>
+                </li>
+                @for ($i = 0; $i < 4; $i++)
+                    <li class="c-event-card c-event-card--skeleton" aria-hidden="true">
+                        <div class="c-event-card__image-wrapper">
+                            <div class="c-event-card__skeleton-image"></div>
+                            <div class="c-event-card__badge c-event-card__badge--skeleton"></div>
+                        </div>
+                        <div class="c-event-card__content">
+                            <div class="c-event-card__skeleton-title"></div>
+                            <div class="c-event-card__skeleton-meta">
+                                <div class="c-event-card__skeleton-line"></div>
+                                <div class="c-event-card__skeleton-line"></div>
+                            </div>
+                        </div>
+                    </li>
+                @endfor
+            @endif
+        </ul>
+    @else
+        <ul
+            class="mod-latest-events__container"
+            data-simpleview-events
+            data-date-icon="{{ $dateIcon ?? 'calendar_today' }}"
+            data-icon-color="{{ $iconColor ?? '#666666' }}"
+        >
+            {{-- Skeleton loader --}}
+            @for ($i = 0; $i < 4; $i++)
+                <li class="c-event-card c-event-card--skeleton">
+                    <div class="c-event-card__image-wrapper">
+                        <div class="c-event-card__skeleton-image"></div>
+                        <div class="c-event-card__badge c-event-card__badge--skeleton"></div>
                     </div>
-                </div>
-            </li>
-        @endfor
-    </ul>
+                    <div class="c-event-card__content">
+                        <div class="c-event-card__skeleton-title"></div>
+                        <div class="c-event-card__skeleton-meta">
+                            <div class="c-event-card__skeleton-line"></div>
+                            <div class="c-event-card__skeleton-line"></div>
+                        </div>
+                    </div>
+                </li>
+            @endfor
+        </ul>
+    @endif
 </div>

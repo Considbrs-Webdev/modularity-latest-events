@@ -6,12 +6,33 @@ namespace ModularityLatestEvents\Api;
 
 class EventProxy
 {
+    private const EDITOR_CACHE_KEY = 'latest_events_editor_preview_4';
+
+    private const EDITOR_LIMIT = 4;
+
+    private const EDITOR_TIMEOUT = 2;
+
+    private static ?self $instance = null;
+
     private string $apiUrl;
     private string $apiToken;
     private string $siteUrl;
 
+    /**
+     * Shared proxy. The plugin constructs one during bootstrap.
+     */
+    public static function instance(): self
+    {
+        if (self::$instance instanceof self) {
+            return self::$instance;
+        }
+
+        return new self();
+    }
+
     public function __construct()
     {
+        self::$instance = $this;
         // Prioritize WordPress options over .env file
         $optionUrl   = get_option('modularity_latest_events_api_url', '');
         $optionToken = get_option('modularity_latest_events_api_token', '');
@@ -81,6 +102,66 @@ class EventProxy
 
         set_transient($cacheKey, $result, 2 * HOUR_IN_SECONDS);
         wp_send_json($result);
+    }
+
+    /**
+     * Events for the block editor canvas.
+     *
+     * Uses the public list cache when it exists. Otherwise one short list
+     * request, without per-event image or category lookups. Failure is a
+     * WP_Error so the template can show a placeholder instead of an empty list.
+     *
+     * @return array<int, array<string, string>>|\WP_Error
+     */
+    public function getEditorPreviewEvents(): array|\WP_Error
+    {
+        $cached = get_transient(self::EDITOR_CACHE_KEY);
+        if (is_array($cached)) {
+            return $cached;
+        }
+
+        $front = get_transient('latest_events_4');
+        if (is_array($front)) {
+            $slice = array_slice($front, 0, self::EDITOR_LIMIT);
+            set_transient(self::EDITOR_CACHE_KEY, $slice, 10 * MINUTE_IN_SECONDS);
+
+            return $slice;
+        }
+
+        if ($this->apiUrl === '' || $this->apiToken === '') {
+            return new \WP_Error('latest_events_unconfigured', 'Event API is not configured.');
+        }
+
+        $response = $this->apiGet('/events', [
+            'lang'     => 'sv',
+            'per_page' => self::EDITOR_LIMIT,
+            'sort'     => 'date',
+            'order'    => 'asc',
+        ], self::EDITOR_TIMEOUT);
+
+        if ($response === null) {
+            return new \WP_Error('latest_events_unavailable', 'Could not fetch events.');
+        }
+
+        $events = [];
+        foreach (array_slice($response['data'] ?? [], 0, self::EDITOR_LIMIT) as $event) {
+            if (!is_array($event)) {
+                continue;
+            }
+
+            $events[] = [
+                'title'     => (string) ($event['title'] ?? ''),
+                'image'     => '',
+                'badgeDate' => $this->extractBadgeDate((string) ($event['event_date'] ?? '')),
+                'dateSpan'  => $this->buildDateSpan($event),
+                'location'  => trim((string) ($event['location'] ?? '')),
+                'link'      => $this->siteUrl . '/events/' . (string) ($event['slug'] ?? ''),
+            ];
+        }
+
+        set_transient(self::EDITOR_CACHE_KEY, $events, 10 * MINUTE_IN_SECONDS);
+
+        return $events;
     }
 
     /**
@@ -178,7 +259,7 @@ class EventProxy
     /**
      * @return array<string, mixed>|null
      */
-    private function apiGet(string $path, array $query = []): ?array
+    private function apiGet(string $path, array $query = [], int $timeout = 10): ?array
     {
         $url = $this->apiUrl . $path;
 
@@ -187,7 +268,7 @@ class EventProxy
         }
 
         $response = wp_remote_get($url, [
-            'timeout' => 10,
+            'timeout' => $timeout,
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->apiToken,
                 'Accept'        => 'application/json',

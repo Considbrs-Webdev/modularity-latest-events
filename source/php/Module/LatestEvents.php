@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ModularityLatestEvents\Module;
 
+use ModularityLatestEvents\Api\EventProxy;
 use ModularityLatestEvents\Helper\CacheBust;
 
 /**
@@ -39,7 +40,45 @@ class LatestEvents extends \Modularity\Module
         $data['iconColor'] = get_field('icon_color', $this->ID) ?: '#666666';
         $data['eventsCalendarUrl'] = (string) (get_field('events_calendar_url', $this->ID) ?: '');
 
+        if ($this->isBlockEditorPreview()) {
+            $data['isEditorPreview'] = true;
+            $iconColor = $data['iconColor'] ?? '#666666';
+            $data['editorIconColor'] = $this->sanitizeIconColor(is_string($iconColor) ? $iconColor : '#666666');
+            $preview = EventProxy::instance()->getEditorPreviewEvents();
+
+            if (is_wp_error($preview)) {
+                $data['editorPreviewState'] = 'unavailable';
+                $data['editorEvents'] = [];
+            } elseif ($preview === []) {
+                $data['editorPreviewState'] = 'empty';
+                $data['editorEvents'] = [];
+            } else {
+                $data['editorPreviewState'] = 'ready';
+                $data['editorEvents'] = $preview;
+            }
+        }
+
         return $data;
+    }
+
+    /**
+     * True while ACF is rendering the block into the editor canvas.
+     */
+    private function isBlockEditorPreview(): bool
+    {
+        return function_exists('acf_get_data') && (bool) acf_get_data('acf_doing_block_preview');
+    }
+
+    /**
+     * Hex colour safe to print in a style attribute.
+     */
+    private function sanitizeIconColor(string $color): string
+    {
+        if (preg_match('/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $color) === 1) {
+            return $color;
+        }
+
+        return '#666666';
     }
 
     /**
