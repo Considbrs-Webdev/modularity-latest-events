@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ModularityLatestEvents;
 
 use ModularityLatestEvents\Api\EventProxy;
+use ModularityLatestEvents\Helper\CacheBust;
 
 /**
  * Class App
@@ -19,8 +20,60 @@ class App
     public function __construct()
     {
         add_action('init', [$this, 'registerModule']);
+        add_action('enqueue_block_assets', [$this, 'enqueueEditorStyles']);
+        add_filter('Pitea/Editor/ModuleStyles', [$this, 'registerEditorStyle']);
 
         new EventProxy();
+    }
+
+    /**
+     * Register the module stylesheet for the shared editor-canvas loader.
+     *
+     * @param array<string, string> $styles
+     * @return array<string, string>
+     */
+    public function registerEditorStyle(array $styles): array
+    {
+        $url = $this->stylesheetUrl();
+        if ($url !== '') {
+            $styles['modularity-latest-events'] = $url;
+        }
+
+        return $styles;
+    }
+
+    /**
+     * Enqueue the module stylesheet inside the block editor iframe.
+     *
+     * Does not load the front-end events script.
+     *
+     * @return void
+     */
+    public function enqueueEditorStyles(): void
+    {
+        if (!is_admin() || wp_style_is('modularity-latest-events', 'enqueued')) {
+            return;
+        }
+
+        $url = $this->stylesheetUrl();
+        if ($url === '') {
+            return;
+        }
+
+        wp_enqueue_style('modularity-latest-events', $url, [], null);
+    }
+
+    /**
+     * Built stylesheet URL, or an empty string when the Vite manifest has no entry.
+     */
+    private function stylesheetUrl(): string
+    {
+        $styleFile = CacheBust::name('css/modularity-latest-events.css');
+        if (!$styleFile) {
+            return '';
+        }
+
+        return MODULARITYLATESTEVENTS_URL . '/assets/dist/' . $styleFile;
     }
 
     /**
