@@ -6,9 +6,9 @@ namespace ModularityLatestEvents\Api;
 
 class EventProxy
 {
-    private const EDITOR_CACHE_KEY = 'latest_events_editor_preview';
+    private const EDITOR_CACHE_KEY = 'latest_events_editor_preview_4';
 
-    private const EDITOR_LIMIT = 3;
+    private const EDITOR_LIMIT = 4;
 
     private const EDITOR_TIMEOUT = 2;
 

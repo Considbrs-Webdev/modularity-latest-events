@@ -39,7 +39,7 @@
                 <li class="c-event-card__error" role="status">
                     <p>{{ __('Förhandsvisning otillgänglig', 'modularity-latest-events') }}</p>
                 </li>
-                @for ($i = 0; $i < 3; $i++)
+                @for ($i = 0; $i < 4; $i++)
                     <li class="c-event-card c-event-card--skeleton" aria-hidden="true">
                         <div class="c-event-card__image-wrapper">
                             <div class="c-event-card__skeleton-image"></div>
