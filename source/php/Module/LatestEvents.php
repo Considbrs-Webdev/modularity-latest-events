@@ -62,11 +62,27 @@ class LatestEvents extends \Modularity\Module
     }
 
     /**
-     * True while ACF is rendering the block into the editor canvas.
+     * True while ACF is rendering this block for the editor preview.
+     *
+     * ACF 6.8 sets acf_doing_block_preview for every block version 3 render,
+     * including the public page. The editor template is limited to the block
+     * editor screen and ACF's fetch-block ajax preview.
      */
     private function isBlockEditorPreview(): bool
     {
-        return function_exists('acf_get_data') && (bool) acf_get_data('acf_doing_block_preview');
+        if (!function_exists('acf_get_data') || !acf_get_data('acf_doing_block_preview')) {
+            return false;
+        }
+
+        if (function_exists('acf_is_block_editor') && acf_is_block_editor()) {
+            return true;
+        }
+
+        if (!wp_doing_ajax() || !isset($_REQUEST['action']) || !is_string($_REQUEST['action'])) {
+            return false;
+        }
+
+        return wp_unslash($_REQUEST['action']) === 'acf/ajax/fetch-block';
     }
 
     /**
