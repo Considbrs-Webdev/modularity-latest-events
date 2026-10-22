@@ -43,6 +43,7 @@ $removables = [
     'package.json',
     'package-lock.json',
     'phpunit.xml.dist',
+    './tests/',
     'README.md',
     './node_modules/',
     './source/js/',

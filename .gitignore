@@ -50,6 +50,7 @@ dist
 
 phpunit-log.xml
 phpunit-testdox.txt
+.phpunit.cache/
 
 # -------------------------
 # BEGIN Whitelisted Files

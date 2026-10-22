@@ -1,18 +1,18 @@
 {
-    "name": "@helsingborg-stad/modularity-latest-events",
+    "name": "@considbrs/modularity-latest-events",
     "version": "1.0.0",
     "description": "Modularity LatestEvents Module",
     "main": "",
     "repository": {
         "type": "git",
-        "url": "https://github.com/helsingborg-stad/modularity-latest-events"
+        "url": "https://github.com/Considbrs-Webdev/modularity-latest-events"
     },
-    "author": "Starter",
+    "author": "Considbrs-Webdev",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/helsingborg-stad/modularity-latest-events/issues"
+        "url": "https://github.com/Considbrs-Webdev/modularity-latest-events/issues"
     },
-    "homepage": "https://github.com/helsingborg-stad/modularity-latest-events",
+    "homepage": "https://github.com/Considbrs-Webdev/modularity-latest-events",
     "scripts": {
         "dev": "vite",
         "build": "vite build",

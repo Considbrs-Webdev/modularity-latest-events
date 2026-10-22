@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name:       Modularity Latest Events
- * Plugin URI:        https://github.com/considbrs-webdev/modularity-latest-events
+ * Plugin URI:        https://github.com/Considbrs-Webdev/modularity-latest-events
  * Description:       A latest-events for creating Modularity modules.
  * Version: 1.0.0
  * Author:            Consid Borås AB
- * Author URI:        https://github.com/helsingborg-stad
+ * Author URI:        https://github.com/Considbrs-Webdev
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
  * Text Domain:       modularity-latest-events

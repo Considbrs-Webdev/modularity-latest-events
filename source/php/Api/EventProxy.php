@@ -181,14 +181,14 @@ class EventProxy
             'oktober' => 'okt', 'november' => 'nov', 'december' => 'dec',
         ];
 
-        // "Lördag, 21 mars" -> "21 mar"
-        if (preg_match('/(\d{1,2})\s+(januari|februari|mars|april|maj|juni|juli|augusti|september|oktober|november|december)/iu', $eventDate, $m)) {
+        // "26–28 juni 2026" -> "26 jun"
+        if (preg_match('/(\d{1,2})[–\-]\d{1,2}\s+(januari|februari|mars|april|maj|juni|juli|augusti|september|oktober|november|december)/iu', $eventDate, $m)) {
             $shortMonth = $months[mb_strtolower($m[2])] ?? mb_substr($m[2], 0, 3);
             return $m[1] . ' ' . $shortMonth;
         }
 
-        // "26–28 juni 2026" -> "26 jun"
-        if (preg_match('/(\d{1,2})[–\-]\d{1,2}\s+(januari|februari|mars|april|maj|juni|juli|augusti|september|oktober|november|december)/iu', $eventDate, $m)) {
+        // "Lördag, 21 mars" -> "21 mar"
+        if (preg_match('/(\d{1,2})\s+(januari|februari|mars|april|maj|juni|juli|augusti|september|oktober|november|december)/iu', $eventDate, $m)) {
             $shortMonth = $months[mb_strtolower($m[2])] ?? mb_substr($m[2], 0, 3);
             return $m[1] . ' ' . $shortMonth;
         }

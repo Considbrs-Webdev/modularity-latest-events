@@ -18,5 +18,16 @@
     "psr-4": {
       "ModularityLatestEvents\\": "source/php/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ModularityLatestEvents\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11.5"
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
   }
 }
